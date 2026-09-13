@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vpndetection-django"
+dynamic = ["version"]
+description = "Official Django middleware for the VPNDetection API. Detect VPNs, proxies, Tor, hosting and CDN visitors on every request."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "Mslm Dev", email = "support@vpndetection.io" }]
+keywords = ["vpn", "vpn-detection", "proxy-detection", "tor", "ip-intelligence", "fraud-prevention", "middleware"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+dependencies = ["vpndetection>=2.1.0,<3", "django>=4.2"]
+
+[project.urls]
+Homepage = "https://vpndetection.io"
+Source = "https://github.com/vpndetection-io/sdk-python-django"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "mypy>=1.11", "ruff>=0.6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vpndetection_django"]
+
+[tool.hatch.version]
+path = "src/vpndetection_django/__init__.py"
+
+[tool.ruff]
+line-length = 96
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+# Django ships no py.typed marker and no inline stubs. django-stubs exists but pins a
+# Django version range, which would make this package refuse a Django it works fine on.
+[[tool.mypy.overrides]]
+module = ["django.*"]
+ignore_missing_imports = true

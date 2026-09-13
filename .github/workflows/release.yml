@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # PyPI trusted publishing exchanges this OIDC token for a short-lived upload
+      # token. No API token in a repository secret.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      # The tag only TRIGGERS this; PyPI publishes whatever the built artifact says.
+      # Without this check, tagging v1.0.1 against a 1.0.0 package silently
+      # republishes 1.0.0, or fails as "already exists" with a confusing message.
+      - name: Tag must match the package version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' src/vpndetection_django/__init__.py)"
+          if [ "$tag" != "$pkg" ] ; then
+            echo "tag $tag does not match __version__ $pkg" >&2
+            exit 1
+          fi
+      - run: pip install -e ".[dev]" build
+      - run: pytest
+      - run: python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
