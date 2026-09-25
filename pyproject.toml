@@ -24,7 +24,7 @@ classifiers = [
     "Topic :: Security",
     "Typing :: Typed",
 ]
-dependencies = ["vpndetection>=5.4.1,<6", "django>=4.2"]
+dependencies = ["vpndetection>=5.4.2,<6", "django>=4.2"]
 
 [project.urls]
 Homepage = "https://vpndetection.io"
