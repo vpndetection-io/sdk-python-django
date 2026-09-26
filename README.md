@@ -1,4 +1,4 @@
-# [<img src="https://s3.vpndetection.io/vpndetection-public/brand/mark.svg" alt="VPNDetection" width="24"/>](https://vpndetection.io/) VPNDetection Django Middleware
+# [<img src="https://s3.vpndetection.io/vpndetection-public/brand/mark.svg" alt="VPNDetection" height="28"/>](https://vpndetection.io/) VPNDetection Django Middleware
 
 [![PyPI](https://img.shields.io/pypi/v/vpndetection-django.svg)](https://pypi.org/project/vpndetection-django/)
 [![license](https://img.shields.io/pypi/l/vpndetection-django.svg)](LICENSE)
