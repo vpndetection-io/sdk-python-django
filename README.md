@@ -67,7 +67,7 @@ By default the middleware uses `REMOTE_ADDR`, which is the socket peer. **Django
 For an edge that writes the address into its own header, name the header:
 
 ```python
-from python_django import header_ip_selector
+from vpndetection_django import header_ip_selector
 
 ip_selector = header_ip_selector("CF-Connecting-IP")  # or True-Client-IP, or your own
 ```
