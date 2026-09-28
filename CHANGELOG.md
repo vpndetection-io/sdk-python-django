@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.0.7 - 2026-09-28
+
+### Fixes
+
+- Require vpndetection 5.5.1: IPv4-mapped visitors are looked up, not waved through ([`7ca152d`](https://github.com/vpndetection-io/sdk-python-django/commit/7ca152d0008ebe8ba5ea7f55eb5c288df33d1de2))
+
 ## 2.0.6 - 2026-09-27
 
 ### Features
