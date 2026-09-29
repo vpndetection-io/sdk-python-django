@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.0.8 - 2026-09-29
+
+### Fixes
+
+- Require vpndetection 5.5.2: 26 more reserved ranges are answered locally ([`74e8270`](https://github.com/vpndetection-io/sdk-python-django/commit/74e8270986bc5f354c972df6392c06f08f261889))
+
 ## 2.0.7 - 2026-09-28
 
 ### Fixes
