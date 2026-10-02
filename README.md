@@ -35,6 +35,8 @@ def index(request):
     return HttpResponse("Hello, VPN user" if found.result.is_vpn else "Hello")
 ```
 
+A request your `skip` claims gets no answer, so it carries no `request.vpndetection`. Wherever `skip` can apply, read the answer as `lookup(request)`, imported from `vpndetection_django`, which is `None` for such a request.
+
 By default nothing is blocked. Every request gets an answer and your own code decides what that means — which is usually what you want, because whether a VPN visitor is a problem depends entirely on what they are doing.
 
 ## Blocking

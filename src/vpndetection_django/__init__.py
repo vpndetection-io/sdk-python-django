@@ -32,6 +32,7 @@ __all__ = [
     "VPNDetectionMiddleware",
     "default_ip_selector",
     "header_ip_selector",
+    "lookup",
     "xff_ip_selector",
 ]
 
@@ -66,6 +67,16 @@ xff_ip_selector = _SELECTORS.xff
 #: ``header_ip_selector("CF-Connecting-IP")`` behind Cloudflare. Falls back to
 #: ``REMOTE_ADDR`` when the header is absent.
 header_ip_selector = _SELECTORS.header
+
+
+def lookup(request: HttpRequest) -> Lookup | None:
+    """What the middleware found out about this visitor.
+
+    None when the middleware has not run for this request, or when ``skip`` claimed it:
+    only a request it classified carries ``request.vpndetection``, so reading that
+    attribute on one ``skip`` claimed raises ``AttributeError``.
+    """
+    return getattr(request, "vpndetection", None)
 
 
 class VPNDetectionMiddleware:

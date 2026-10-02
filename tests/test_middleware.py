@@ -29,7 +29,7 @@ settings.configure(
 )
 django.setup()
 
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.test import Client
 from django.urls import path
 from vpndetection import VPNDetection
@@ -38,6 +38,7 @@ from vpndetection_django import (
     VPNDetectionMiddleware,
     default_ip_selector,
     header_ip_selector,
+    lookup,
     xff_ip_selector,
 )
 
@@ -48,7 +49,7 @@ MIDDLEWARE = CORPUS["middleware"]
 
 
 def view(request: Any) -> JsonResponse:
-    found = getattr(request, "vpndetection", None)
+    found = lookup(request)
     return JsonResponse(
         {
             "ip": found.ip if found else None,
@@ -164,6 +165,15 @@ def test_skip_leaves_the_request_untouched() -> None:
     assert status == 200
     assert body["attached"] is False
     assert client.asked == []
+
+
+def test_lookup_is_the_attached_answer_or_none() -> None:
+    """``request.vpndetection`` exists only on a request the middleware classified, so a
+    view reading it where ``skip`` applies raised ``AttributeError``, a 500."""
+    request = HttpRequest()
+    assert lookup(request) is None
+    request.vpndetection = found = object()  # type: ignore[attr-defined]
+    assert lookup(request) is found
 
 
 def test_a_failing_lookup_lets_the_visitor_through() -> None:
