@@ -88,11 +88,13 @@ The request is let through, and the reason is recorded on the answer's `error`. 
 
 Answers are cached for an hour, so a returning visitor costs nothing, and private addresses never leave the process. A cache miss is one request to our API, bounded at 2.5 seconds by default and not retried — on a request path, failing open quickly beats holding a visitor while we try again. Both are adjustable, as is the cache, through a `vpndetection` client you build yourself and pass as `client`.
 
-Skip what you do not care about:
+Skip what you do not care about, or must never refuse:
 
 ```python
-skip = lambda request: request.path.startswith("/static")
+skip = lambda request: request.path.startswith("/webhooks/")
 ```
+
+A webhook comes from its sender's servers, an address a hosting rule would refuse. Static files need no skip: `runserver`, WhiteNoise and a web server in front each answer them before this middleware runs.
 
 Beyond a few million distinct visitors a day, stop calling the API per request: [download the dataset](https://vpndetection.io/#databases) and look addresses up locally instead.
 
