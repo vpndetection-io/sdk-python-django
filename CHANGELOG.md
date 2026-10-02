@@ -2,6 +2,16 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.1.0 - 2026-10-02
+
+### Features
+
+- Add lookup(request), None for a request skip claimed ([`da424f7`](https://github.com/vpndetection-io/sdk-python-django/commit/da424f78af4c64083e3092f286502bc2241ece61))
+
+### Fixes
+
+- Require vpndetection 5.5.3: a long Retry-After or timeout no longer raises OverflowError ([`8bdd4bb`](https://github.com/vpndetection-io/sdk-python-django/commit/8bdd4bb937626e7727619d1829f422b85a176c4d))
+
 ## 2.0.8 - 2026-09-29
 
 ### Fixes
