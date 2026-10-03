@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.0 - 2026-10-03
+
+### Features
+
+- Add block_if, a decorator refusing one view to a visitor matching a condition ([`fdd23ab`](https://github.com/vpndetection-io/sdk-python-django/commit/fdd23ab04c0cd0f6d78af8957bcfb4c8d4f41f3d))
+
 ## 2.1.0 - 2026-10-02
 
 ### Features
