@@ -1,7 +1,8 @@
 """Official Django middleware for the VPNDetection API.
 
 Classifies the visitor behind each request and hangs the answer off
-``request.vpndetection``, where your views can read it. Blocking is opt-in.
+``request.vpndetection``, where your views can read it. Blocking is opt-in, for every
+view in ``settings.VPNDETECTION`` or for one with :func:`block_if`.
 
     # settings.py
     MIDDLEWARE = [..., "vpndetection_django.VPNDetectionMiddleware"]
@@ -14,14 +15,20 @@ only the parts that are genuinely Django-shaped.
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Any
+from functools import wraps
+from typing import Any, TypeVar
 
+from asgiref.sync import iscoroutinefunction
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from vpndetection.middleware import (
+    Conditions,
     Core,
+    Guard,
     IpSelector,
     Lookup,
+    MissingFieldAction,
     Options,
     RequestView,
     Selectors,
@@ -30,6 +37,7 @@ from vpndetection.middleware import (
 
 __all__ = [
     "VPNDetectionMiddleware",
+    "block_if",
     "default_ip_selector",
     "header_ip_selector",
     "lookup",
@@ -37,6 +45,12 @@ __all__ = [
 ]
 
 __version__ = "2.1.0"
+
+View = TypeVar("View", bound=Callable[..., Any])
+
+# Set on a request ``skip`` claimed, so block_if can tell it from one the middleware
+# never saw.
+_SKIPPED = "_vpndetection_skipped"
 
 _SELECTORS: Selectors[HttpRequest] = bind_selectors(
     lambda request: RequestView(
@@ -79,6 +93,77 @@ def lookup(request: HttpRequest) -> Lookup | None:
     return getattr(request, "vpndetection", None)
 
 
+def block_if(
+    condition: Conditions,
+    *,
+    on_blocked: Callable[[HttpRequest, Lookup], HttpResponse] | None = None,
+    fail_closed: bool = False,
+    on_missing_field: MissingFieldAction = "warn",
+    on_warn: Callable[[str], None] | None = None,
+) -> Callable[[View], View]:
+    """Refuse one view to a visitor matching ``condition``.
+
+    The middleware's ``block_condition`` refuses on every view; this refuses on the view
+    it decorates, sync or async::
+
+        @block_if({"is_vpn": True})
+        def checkout(request): ...
+
+    It judges the answer the middleware already attached, so the visitor is not looked
+    up again, and a member your plan does not serve is reported once, as the
+    middleware's own condition reports it. A condition that constrains nothing is
+    refused when the decorator is applied.
+
+    A request ``skip`` claimed carries no answer and reaches the view, and so does one
+    whose lookup failed unless you set ``fail_closed``. A request the middleware never
+    saw raises ``ImproperlyConfigured``: a check that silently never ran would be worse
+    than none.
+    """
+    refuse = on_blocked or _refuse
+
+    def decorate(view: View) -> View:
+        guard = Guard(
+            condition,
+            fail_closed=fail_closed,
+            on_missing_field=on_missing_field,
+            on_warn=on_warn,
+            name=f"block_if on {getattr(view, '__qualname__', view)}",
+        )
+
+        def refusal(request: HttpRequest) -> HttpResponse | None:
+            found = lookup(request)
+            if found is None:
+                if getattr(request, _SKIPPED, False):
+                    return None
+                raise ImproperlyConfigured(
+                    "vpndetection: block_if found no answer on this request; add "
+                    "vpndetection_django.VPNDetectionMiddleware to MIDDLEWARE"
+                )
+            return refuse(request, found) if guard.blocks(found) else None
+
+        if iscoroutinefunction(view):
+
+            @wraps(view)
+            async def guarded_async(request: HttpRequest, *args: Any, **kwargs: Any) -> Any:
+                refused = refusal(request)
+                if refused is not None:
+                    return refused
+                return await view(request, *args, **kwargs)
+
+            return guarded_async  # type: ignore[return-value]
+
+        @wraps(view)
+        def guarded(request: HttpRequest, *args: Any, **kwargs: Any) -> Any:
+            refused = refusal(request)
+            if refused is not None:
+                return refused
+            return view(request, *args, **kwargs)
+
+        return guarded  # type: ignore[return-value]
+
+    return decorate
+
+
 class VPNDetectionMiddleware:
     """Classify the visitor, and optionally refuse the request.
 
@@ -102,6 +187,7 @@ class VPNDetectionMiddleware:
     def __call__(self, request: HttpRequest) -> HttpResponse:
         lookup = self._core.evaluate(request)
         if lookup is None:
+            setattr(request, _SKIPPED, True)
             return self._get_response(request)
         request.vpndetection = lookup
         if lookup.blocked:

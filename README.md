@@ -60,6 +60,20 @@ Values are matched by equality, strings without regard to case. A list means any
 
 Replace the refusal with `on_blocked`.
 
+### Blocking one view
+
+`block_condition` applies to every view. To refuse a visitor on some views only, decorate them, sync or async:
+
+```python
+from vpndetection_django import block_if
+
+@block_if({"is_vpn": True})
+def checkout(request):
+    ...
+```
+
+`block_if` takes the same condition, `on_blocked`, `fail_closed` and `on_missing_field`. It judges the answer the middleware already attached, so a visitor is looked up once however many views check them, and it warns once for a member your plan doesn't include. A request `skip` claimed reaches the view. The middleware still has to be installed: without it, a decorated view raises `ImproperlyConfigured` instead of letting everyone through.
+
 ## Where the client address comes from
 
 This is the setting that decides whether any of the above works, and it is the one thing only you can get right.
