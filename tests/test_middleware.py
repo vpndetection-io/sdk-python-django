@@ -8,6 +8,7 @@ a public address, through a selector.
 from __future__ import annotations
 
 import json
+import os
 import pathlib
 from typing import Any
 
@@ -400,3 +401,18 @@ def test_corpus_conditions_through_block_if(case: dict[str, Any]) -> None:
     assert len(reported) == (1 if case["expect"]["missing"] else 0), case["why"]
     for member in case["expect"]["missing"]:
         assert member in reported[0], case["why"]
+
+
+# Built exactly as the README builds it: an API key and nothing else. Every other test hands
+# the middleware a client, so none of them could see a core that cannot start from a key
+# alone. The test client's loopback peer is a bogon, answered with no request.
+def test_the_middleware_starts_the_way_the_readme_builds_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("VPNDETECTION_API_KEY", "a-key")
+    status, body = get(call(api_key=os.environ["VPNDETECTION_API_KEY"]))
+
+    assert status == 200
+    assert body["attached"] is True
+    assert body["is_bogon"] is True
+    assert body["error"] is None
