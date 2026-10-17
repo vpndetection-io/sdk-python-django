@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.6 - 2026-10-17
+
+### Features
+
+- Require vpndetection 5.8.0: OauthMetadata carries registration_endpoint ([`599c016`](https://github.com/vpndetection-io/sdk-python-django/commit/599c016879298a444bb80233840ddf1a8d0916de))
+
 ## 2.2.5 - 2026-10-16
 
 ### Fixes
