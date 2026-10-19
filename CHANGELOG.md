@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.8 - 2026-10-19
+
+### Fixes
+
+- Require vpndetection 5.10.0: num_ports and num_proxies in the pubproxy detail ([`a09ecec`](https://github.com/vpndetection-io/sdk-python-django/commit/a09ececc5f9cec37d07e804480dac0f6c62b010b))
+
 ## 2.2.7 - 2026-10-18
 
 ### Fixes
