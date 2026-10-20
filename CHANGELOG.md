@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.9 - 2026-10-20
+
+### Features
+
+- Require vpndetection 5.11.0: lookup results carry location and asn ([`45e343e`](https://github.com/vpndetection-io/sdk-python-django/commit/45e343e625d347b77a5f94bfc9c03f907e0283f3))
+
 ## 2.2.8 - 2026-10-19
 
 ### Fixes
