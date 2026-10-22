@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.10 - 2026-10-22
+
+### Fixes
+
+- Require vpndetection 5.11.1: a wrong-typed member is a server_error ([`94cd965`](https://github.com/vpndetection-io/sdk-python-django/commit/94cd96553677577a9c0edeec0b58ff9858c4f8f8))
+
 ## 2.2.9 - 2026-10-20
 
 ### Features
