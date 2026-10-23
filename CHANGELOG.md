@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.11 - 2026-10-23
+
+### Fixes
+
+- Require vpndetection 5.12.0, which adds oauth.register ([`612613b`](https://github.com/vpndetection-io/sdk-python-django/commit/612613b6e77a482a9b76d6f89a84868142abe242))
+
 ## 2.2.10 - 2026-10-22
 
 ### Fixes
