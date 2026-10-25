@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.12 - 2026-10-25
+
+### Fixes
+
+- Require vpndetection 5.12.1: retry counts and dates are checked ([`28672bd`](https://github.com/vpndetection-io/sdk-python-django/commit/28672bd04b9794a7151b102fb281d9940c252c2b))
+
 ## 2.2.11 - 2026-10-23
 
 ### Fixes
