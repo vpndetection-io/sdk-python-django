@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.14 - 2026-10-28
+
+### Fixes
+
+- Require vpndetection 5.12.3: a date-time whose T or Z is lowercase is read ([`da55e77`](https://github.com/vpndetection-io/sdk-python-django/commit/da55e77e840025198522450568763b66a8441d64))
+
 ## 2.2.13 - 2026-10-26
 
 ### Fixes
