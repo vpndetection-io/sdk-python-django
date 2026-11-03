@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/vpndetection-django.svg)](https://pypi.org/project/vpndetection-django/)
 [![license](https://img.shields.io/pypi/l/vpndetection-django.svg)](LICENSE)
 
-The official Django Middleware for the [VPNDetection](https://vpndetection.io) API.
+The official Django middleware for the [VPNDetection](https://vpndetection.io) API.
 
 It classifies the visitor behind each request — VPN, residential proxy, Tor, hosting, CDN, relay — and hands the answer to your code. Blocking is opt-in.
 
