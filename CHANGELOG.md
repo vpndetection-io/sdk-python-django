@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.15 - 2026-11-06
+
+### Fixes
+
+- Require vpndetection 5.12.4: a device poll ends at its deadline ([`db133f2`](https://github.com/vpndetection-io/sdk-python-django/commit/db133f2a6e8940ff019fd555ef77bf37ab898634))
+
 ## 2.2.14 - 2026-10-28
 
 ### Fixes
