@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.16 - 2026-11-07
+
+### Features
+
+- Require vpndetection 5.13.0: downloads take the build a webhook names ([`54b1fcb`](https://github.com/vpndetection-io/sdk-python-django/commit/54b1fcb30757f749ac9bd4151aea4974b35c1e09))
+
 ## 2.2.15 - 2026-11-06
 
 ### Fixes
