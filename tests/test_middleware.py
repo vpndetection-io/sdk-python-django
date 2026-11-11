@@ -416,3 +416,31 @@ def test_the_middleware_starts_the_way_the_readme_builds_it(
     assert body["attached"] is True
     assert body["is_bogon"] is True
     assert body["error"] is None
+
+
+# The README's middleware again, served a PUBLIC peer with a forged X-Forwarded-For: the key must
+# reach the API, and the socket address must be the one looked up. The test above is answered
+# with no request, so it passed with the key dropped. httpx's own transport answers for the
+# API's host alone, so nothing leaves the machine.
+def test_the_readme_middleware_sends_its_key_for_a_public_peer(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sent: list[tuple[str, str | None]] = []
+
+    def handle(_transport: httpx.HTTPTransport, request: httpx.Request) -> httpx.Response:
+        if request.url.host != "api.vpndetection.io":
+            raise httpx.ConnectError("only the API's host answers here", request=request)
+        sent.append((request.url.path, request.headers.get("Authorization")))
+        return httpx.Response(200, json={"ip": PUBLIC_IP, "is_vpn": True})
+
+    monkeypatch.setattr(httpx.HTTPTransport, "handle_request", handle)
+    monkeypatch.setenv("VPNDETECTION_API_KEY", "a-key")
+    client = call({"X-Forwarded-For": "1.1.1.1"}, api_key=os.environ["VPNDETECTION_API_KEY"])
+    response = client.get("/", REMOTE_ADDR=PUBLIC_IP)
+    status, body = response.status_code, json.loads(response.content)
+
+    assert status == 200
+    assert body["ip"] == PUBLIC_IP, "the socket peer is looked up; the header is a forgery"
+    assert body["error"] is None and body["is_vpn"] is True
+    assert len(sent) == 1 and sent[0][0].endswith(PUBLIC_IP)
+    assert sent[0][1] == "Bearer a-key"
