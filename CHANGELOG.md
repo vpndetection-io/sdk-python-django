@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.17 - 2026-11-11
+
+### Fixes
+
+- Require vpndetection 5.13.1: a client concurrency is checked where it is set ([`a65613b`](https://github.com/vpndetection-io/sdk-python-django/commit/a65613b118b545b3db727c0c7ba796c0a2deaae0))
+
 ## 2.2.16 - 2026-11-07
 
 ### Features
