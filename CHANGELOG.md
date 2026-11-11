@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.20 - 2026-11-11
+
+### Fixes
+
+- Require vpndetection 5.14.2: the Unlimited tier and its terms ([`aef900f`](https://github.com/vpndetection-io/sdk-python-django/commit/aef900f8b014d6ed3f25e4e036208e0f8f9997f2))
+
 ## 2.2.19 - 2026-11-11
 
 ### Fixes
