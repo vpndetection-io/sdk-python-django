@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.25 - 2026-11-17
+
+### Fixes
+
+- Require vpndetection 5.17.0: a vocabulary value it was not built with comes back as served, and the plan's name ([`fd2accd`](https://github.com/vpndetection-io/sdk-python-django/commit/fd2accde81c36e1fe84f71a594d1a96645b44f02))
+
 ## 2.2.24 - 2026-11-14
 
 ### Fixes
