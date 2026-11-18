@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.26 - 2026-11-18
+
+### Fixes
+
+- Require vpndetection 5.18.0: cap_reached past a paid plan's overage cap ([`a8aad93`](https://github.com/vpndetection-io/sdk-python-django/commit/a8aad93f7a17fb0861fd8d80236d4cfe38834ec3))
+
 ## 2.2.25 - 2026-11-17
 
 ### Fixes
