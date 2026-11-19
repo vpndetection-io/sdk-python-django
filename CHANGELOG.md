@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.27 - 2026-11-19
+
+### Fixes
+
+- Require vpndetection 5.18.1: re-pinned to spec 2026.11.18 ([`2a7672b`](https://github.com/vpndetection-io/sdk-python-django/commit/2a7672bf8b650b98427a3496925371952521ab22))
+
 ## 2.2.26 - 2026-11-18
 
 ### Fixes
