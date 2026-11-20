@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.28 - 2026-11-20
+
+### Features
+
+- Require vpndetection 5.19.0: the network, service, company and abuse members ([`87e6f80`](https://github.com/vpndetection-io/sdk-python-django/commit/87e6f80b7b11d8d0349a8bb34f3f48cc9eabcd11))
+
 ## 2.2.27 - 2026-11-19
 
 ### Fixes

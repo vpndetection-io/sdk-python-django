@@ -44,7 +44,7 @@ __all__ = [
     "xff_ip_selector",
 ]
 
-__version__ = "2.2.27"
+__version__ = "2.2.28"
 
 View = TypeVar("View", bound=Callable[..., Any])
 
