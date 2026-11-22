@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.2.29 - 2026-11-22
+
+### Features
+
+- Require vpndetection 5.20.0: is_bot and bot, and the AS's country and RPKI status required ([`3baf0d7`](https://github.com/vpndetection-io/sdk-python-django/commit/3baf0d7f905557549319c59db7f1c4bd710b582a))
+
 ## 2.2.28 - 2026-11-20
 
 ### Features
