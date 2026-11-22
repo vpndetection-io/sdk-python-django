@@ -160,6 +160,17 @@ def test_blocks_when_the_condition_matches_and_passes_when_it_does_not() -> None
     assert status == 200
 
 
+@pytest.mark.parametrize("condition", [{"is_bot": True}, {"bot": {"verified": True}}])
+def test_a_condition_on_a_bot_blocks_a_bot_and_passes_the_rest(
+    condition: dict[str, Any],
+) -> None:
+    for is_bot, bot in ((True, {"provider": "google", "verified": True}), (False, {})):
+        served = serving({"is_vpn": False, "is_bot": is_bot, "bot": bot})
+        status, _ = get(call(client=served, ip_selector=fixed_ip, block_condition=condition))
+        assert status == (403 if is_bot else 200), f"{condition} against is_bot {is_bot}"
+        assert served.asked == [PUBLIC_IP]
+
+
 def test_a_condition_reaches_the_evidence_fields() -> None:
     nord = serving({"is_vpn": True, "vpn": {"provider": "nordvpn"}})
     status, _ = get(
