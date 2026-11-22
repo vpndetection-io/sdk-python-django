@@ -56,7 +56,7 @@ A condition is written in the shape of a result, keyed by the same names the API
 [{"is_tor": True}, {"is_resproxy": True}]  # a list is OR
 ```
 
-Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic.
+Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. A member the answer holds as a list (`web`, `pubproxy.protocols`, `bittorrent.clients`, `bot.agents`, `bot.categories`) is never matched, so block on its flag alone. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic.
 
 Replace the refusal with `on_blocked`.
 
@@ -114,7 +114,7 @@ Beyond a few million distinct visitors a day, stop calling the API per request: 
 
 ## Absent is not false
 
-Unlimited, with a key or without one, leaves out `is_hosting`, `is_cdn`, the four proxy flags, the carrier, satellite and service flags, `company` and `abuse`, and of the detail behind each flag it answers only Tor's and relay's. A field your plan does not include is `None`, which means "not in your plan" rather than "checked, and no".
+Unlimited, with a key or without one, leaves out `is_hosting`, `is_cdn`, the four proxy flags, the carrier, satellite and service flags, `bot`, `company` and `abuse`, and of the detail behind each flag it answers only Tor's and relay's. A field your plan does not include is `None`, which means "not in your plan" rather than "checked, and no".
 
 ```python
 request.vpndetection.result.is_hosting  # None when your plan does not include it
