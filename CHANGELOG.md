@@ -2,6 +2,13 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.0 - 2026-11-23
+
+### Features
+
+- Require vpndetection 5.21.0: a user agent with a lookup, and allow_bots in the middleware core ([`62a913e`](https://github.com/vpndetection-io/sdk-python-django/commit/62a913e13f6a9edc7cb98813e9642989bb3cb77b))
+- Let a verified crawler through with allow_bots ([`fa66257`](https://github.com/vpndetection-io/sdk-python-django/commit/fa662570881a89e208ddadce64837c19c3b0709e))
+
 ## 2.2.29 - 2026-11-22
 
 ### Features
