@@ -168,7 +168,9 @@ class VPNDetectionMiddleware:
     """Classify the visitor, and optionally refuse the request.
 
     Configured from ``settings.VPNDETECTION``, a dict taking everything
-    :class:`vpndetection.middleware.Options` does plus ``on_blocked``.
+    :class:`vpndetection.middleware.Options` does plus ``on_blocked``. ``"allow_bots":
+    True`` sends the request's own ``User-Agent`` with its lookup and never refuses a
+    crawler the answer verifies, here or in :func:`block_if`.
 
     Without a ``block_condition`` this only enriches the request and never refuses
     one, leaving the decision to your own views. A lookup that fails - network, quota,
@@ -181,7 +183,9 @@ class VPNDetectionMiddleware:
         self._on_blocked: Callable[[HttpRequest, Lookup], HttpResponse] = configured.pop(
             "on_blocked", _refuse
         )
-        self._core: Core[HttpRequest] = Core(Options(**configured), default_ip_selector)
+        self._core: Core[HttpRequest] = Core(
+            Options(**configured), default_ip_selector, _user_agent
+        )
         self._get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
@@ -193,6 +197,11 @@ class VPNDetectionMiddleware:
         if lookup.blocked:
             return self._on_blocked(request, lookup)
         return self._get_response(request)
+
+
+def _user_agent(request: HttpRequest) -> str | None:
+    agent: str | None = request.headers.get("User-Agent")
+    return agent
 
 
 def _refuse(_request: HttpRequest, _lookup: Lookup) -> HttpResponse:
