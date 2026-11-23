@@ -60,6 +60,20 @@ Values are matched by equality, strings without regard to case. A list means any
 
 Replace the refusal with `on_blocked`.
 
+### Letting verified crawlers through
+
+`"allow_bots": True` sends each request's own `User-Agent` header with its lookup, and a request whose answer verifies that crawler, `request.vpndetection.result.user_agent.verdict == "verified"`, is never refused, by `block_condition` or by `block_if`; the answer is still attached. A request with no `User-Agent` sends none. It is off by default, which keeps one cached answer per address rather than one per agent.
+
+```python
+VPNDETECTION = {
+    "api_key": os.environ["VPNDETECTION_API_KEY"],
+    "block_condition": {"is_hosting": True},
+    "allow_bots": True,
+}
+```
+
+With it on, a condition can name the verdict, refusing a forged crawler and a script: `{"user_agent": {"verdict": ["spoofed", "not_bot"]}}`. Only a paid plan's answer carries `user_agent`: a keyless client, or a free key past its trial, never gets a verdict and lets no crawler through, and the middleware warns once when that happens.
+
 ### Blocking one view
 
 `block_condition` applies to every view. To refuse a visitor on some views only, decorate them, sync or async:
