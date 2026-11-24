@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.1 - 2026-11-24
+
+### Fixes
+
+- Require vpndetection 5.21.1: a detail's first_seen or last_seen that is not a day is refused ([`fd90cb5`](https://github.com/vpndetection-io/sdk-python-django/commit/fd90cb53f7a50d8b02c1f270ff7e5709fd7bad0d))
+
 ## 2.3.0 - 2026-11-23
 
 ### Features
