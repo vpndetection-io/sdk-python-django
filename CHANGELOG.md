@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.2 - 2026-11-24
+
+### Fixes
+
+- Require vpndetection 5.22.0: a condition on a list member, such as pubproxy.protocols or a web row's port, matches any element ([`4f2852a`](https://github.com/vpndetection-io/sdk-python-django/commit/4f2852adcd6bb4b5b0c60e07a342b293ba442a83))
+
 ## 2.3.1 - 2026-11-24
 
 ### Fixes
