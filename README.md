@@ -56,7 +56,7 @@ A condition is written in the shape of a result, keyed by the same names the API
 [{"is_tor": True}, {"is_resproxy": True}]  # a list is OR
 ```
 
-Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. A member the answer holds as a list (`web`, `pubproxy.protocols`, `bittorrent.clients`, `bot.agents`, `bot.categories`) is never matched, so block on its flag alone. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic.
+Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. A member the answer holds as a list (`web`, `pubproxy.protocols`, `bittorrent.clients`, `bot.agents`, `bot.categories`) matches when any one element does: `{"pubproxy": {"protocols": "socks5"}}` blocks a proxy that speaks SOCKS5 among others, and an object term such as `{"web": {"port": 443}}` must match a single row. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic.
 
 Replace the refusal with `on_blocked`.
 
