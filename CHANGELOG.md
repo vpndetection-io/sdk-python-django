@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.3 - 2026-11-25
+
+### Fixes
+
+- Require vpndetection 5.22.1: doc comments name a paid plan, the entitlement example the Data plan ([`9ef4846`](https://github.com/vpndetection-io/sdk-python-django/commit/9ef4846367dc2dad1ddde5d400de674cec04241e))
+
 ## 2.3.2 - 2026-11-24
 
 ### Fixes
