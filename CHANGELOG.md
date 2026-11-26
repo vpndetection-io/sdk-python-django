@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.4 - 2026-11-26
+
+### Features
+
+- Require vpndetection 5.23.0: allowBots sends only a crawler's User-Agent, at most four an address ([`a36aa80`](https://github.com/vpndetection-io/sdk-python-django/commit/a36aa80132c158df4a3f8e2f87c30f03aadd18d6))
+
 ## 2.3.3 - 2026-11-25
 
 ### Fixes
