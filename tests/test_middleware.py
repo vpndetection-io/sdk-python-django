@@ -171,6 +171,39 @@ def test_a_condition_on_a_bot_blocks_a_bot_and_passes_the_rest(
         assert served.asked == [PUBLIC_IP]
 
 
+ASN = {
+    "asn": 9009,
+    "name": "M247 Europe SRL",
+    "domain": "m247global.com",
+    "prefix": "146.70.116.0/24",
+    "country": "US",
+    "rpki_status": "valid",
+}
+
+
+def test_an_answer_without_the_asn_type_is_read_and_a_condition_on_it_never_matches() -> None:
+    warnings: list[str] = []
+    keyless = serving({"is_vpn": True, "asn": ASN})
+    status, body = get(
+        call(
+            client=keyless,
+            ip_selector=fixed_ip,
+            block_condition={"asn": {"type": "hosting"}},
+            on_warn=warnings.append,
+        )
+    )
+    assert status == 200
+    assert body["error"] is None and body["is_vpn"] is True, "the answer was read and attached"
+    reported = [w for w in warnings if "does not include" in w]
+    assert len(reported) == 1 and "asn.type" in reported[0]
+
+    paid = serving({"is_vpn": True, "asn": {**ASN, "type": "hosting"}})
+    status, _ = get(
+        call(client=paid, ip_selector=fixed_ip, block_condition={"asn": {"type": "hosting"}})
+    )
+    assert status == 403, "the same condition blocks an answer that carries the type"
+
+
 def test_a_condition_reaches_the_evidence_fields() -> None:
     nord = serving({"is_vpn": True, "vpn": {"provider": "nordvpn"}})
     status, _ = get(
