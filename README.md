@@ -56,7 +56,7 @@ A condition is written in the shape of a result, keyed by the same names the API
 [{"is_tor": True}, {"is_resproxy": True}]  # a list is OR
 ```
 
-Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. A member the answer holds as a list (`web`, `pubproxy.protocols`, `bittorrent.clients`, `bot.agents`, `bot.categories`) matches when any one element does: `{"pubproxy": {"protocols": "socks5"}}` blocks a proxy that speaks SOCKS5 among others, and an object term such as `{"web": {"port": 443}}` must match a single row. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic.
+Values are matched by equality, strings without regard to case. A list means any-of. A dict of `gte`/`gt`/`lte`/`lt` compares numbers, and every bound you give must hold, so two of them are a range. A member the answer holds as a list (`web`, `pubproxy.protocols`, `bittorrent.clients`, `bot.agents`, `bot.categories`) matches when any one element does: `{"pubproxy": {"protocols": "socks5"}}` blocks a proxy that speaks SOCKS5 among others, and an object term such as `{"web": {"port": 443}}` must match a single row. Members set to `False` or `None` are ignored, so a condition states the signals you act on; one that constrains nothing would match every request, and is refused when the middleware is built rather than silently blocking all your traffic. A condition on `is_bot` or `asn.type` without a paid key is reported as a member your plan does not include and never matches.
 
 Replace the refusal with `on_blocked`.
 
@@ -72,7 +72,7 @@ VPNDETECTION = {
 }
 ```
 
-With it on, a condition can name the verdict, refusing a forged crawler: `{"user_agent": {"verdict": "spoofed"}}`. Only a paid plan's answer carries `user_agent`: a keyless client, or a free key past its trial, never gets a verdict and lets no crawler through, and the middleware warns once when that happens.
+With it on, a condition can name the verdict, refusing a forged crawler: `{"user_agent": {"verdict": "spoofed"}}`. Only a paid plan's answer carries `user_agent`: a keyless client, or a free key past its trial, never gets a verdict and lets no crawler through, and the middleware warns once when that happens. `bot` and `is_bot` are a paid plan's too, so a keyless app gets no bot pass.
 
 ### Blocking one view
 
@@ -128,7 +128,7 @@ Beyond a few million distinct visitors a day, stop calling the API per request: 
 
 ## Absent is not false
 
-Unlimited, with a key or without one, leaves out `is_hosting`, `is_cdn`, the four proxy flags, the carrier, satellite and service flags, `bot`, `company` and `abuse`, and of the detail behind each flag it answers only Tor's and relay's. A field your plan does not include is `None`, which means "not in your plan" rather than "checked, and no".
+Unlimited, with a key or without one, leaves out `is_hosting`, `is_cdn`, the four proxy flags, `is_bot`, the carrier, satellite and service flags, `bot`, `company` and `abuse`, the AS's `type`, and of the detail behind each flag it answers only Tor's and relay's. A field your plan does not include is `None`, which means "not in your plan" rather than "checked, and no". The AS's `type` is the exception: it stays a `str` and reads `""` when the answer leaves it out.
 
 ```python
 request.vpndetection.result.is_hosting  # None when your plan does not include it
