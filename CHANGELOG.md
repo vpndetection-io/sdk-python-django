@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff. Releases before 2.0.5 are described by their release commits.
 
+## 2.3.6 - 2026-11-27
+
+### Features
+
+- Require vpndetection 5.24.0: a keyless answer without the AS's type reads ([`31992a2`](https://github.com/vpndetection-io/sdk-python-django/commit/31992a2df779a2f3b1c2f2f92d124243d93cd007))
+
 ## 2.3.5 - 2026-11-26
 
 ### Fixes
