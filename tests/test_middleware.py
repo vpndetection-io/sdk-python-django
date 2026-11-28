@@ -501,6 +501,14 @@ def guarded_hosting(request: Any) -> JsonResponse:
 urlpatterns.append(path("guarded-hosting", guarded_hosting))
 
 
+@block_if({"user_agent": {"verdict": "spoofed"}}, on_missing_field="raise")
+def guarded_forged(request: Any) -> JsonResponse:
+    return view(request)
+
+
+urlpatterns.append(path("guarded-forged", guarded_forged))
+
+
 def api_answering(
     monkeypatch: pytest.MonkeyPatch, verdicts: dict[str, str] | None
 ) -> list[str | None]:
@@ -599,3 +607,27 @@ def test_an_answer_without_a_verdict_warns_once(monkeypatch: pytest.MonkeyPatch)
 
     assert sent == [GOOGLEBOT, GOOGLEBOT]
     assert len([w for w in warnings if "user_agent verdict" in w]) == 1, warnings
+
+
+@pytest.mark.parametrize("url", ["/", "/guarded-forged"])
+@pytest.mark.parametrize("action", ["raise", "warn"])
+@pytest.mark.parametrize("peer", ["127.0.0.1", "10.0.0.1", "::1"])
+def test_a_bogon_peer_with_a_crawlers_agent_is_no_plan_gap(
+    monkeypatch: pytest.MonkeyPatch, peer: str, action: str, url: str
+) -> None:
+    # Local development behind no proxy. This is NOT the public-peer test above: the peer is
+    # answered locally, so the question is only that no plan gap is reported for it.
+    sent = api_answering(monkeypatch, {GOOGLEBOT: "spoofed"})
+    warnings: list[str] = []
+    forged = {"user_agent": {"verdict": "spoofed"}}
+    options: dict[str, Any] = {
+        "allow_bots": True,
+        "on_missing_field": action,
+        "on_warn": warnings.append,
+    }
+    if url == "/":
+        options["block_condition"] = forged
+
+    assert visit(GOOGLEBOT, url=url, peer=peer, **options) == 200
+    assert sent == [], "a bogon reached the API"
+    assert [w for w in warnings if "does not include" in w] == []
